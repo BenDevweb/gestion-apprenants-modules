@@ -39,20 +39,23 @@
           <a href="/modules" class="flex items-center gap-3 py-2 px-3 rounded hover:bg-zinc-800 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 014-4h4a4 4 0 014 4v2M9 17H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v6a4 4 0 01-4 4h-2" /></svg>
             Modules
-          </a>
-          @if(auth?.user)
+            @if(authUser)
             <form action="/logout" method="POST" class="mt-4">
-              {{ csrfField() }}
-              <button class="w-full flex items-center gap-3 text-left py-2 px-3 rounded hover:bg-zinc-800 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
-                Déconnexion
-              </button>
-            </form>
-          @else
-            <a href="/login" class="flex items-center gap-3 py-2 px-3 rounded hover:bg-zinc-800 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" /></svg>
-              Connexion
-            </a>
+            {{ csrfField() }}
+            <button class="w-full flex items-center gap-3 text-left py-2 px-3 rounded hover:bg-zinc-800 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" />
+              </svg>
+              Déconnexion
+            </button>
+          </form>
+        @else
+          <a href="/login" class="flex items-center gap-3 py-2 px-3 rounded hover:bg-zinc-800 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+            Connexion
+          </a>
           @end
         </nav>
       </aside>

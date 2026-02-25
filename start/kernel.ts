@@ -11,42 +11,39 @@
 import router from '@adonisjs/core/services/router'
 import server from '@adonisjs/core/services/server'
 
+// Ajout du middleware global AuthMiddleware
+
+
 /**
- * The error handler is used to convert an exception
- * to an HTTP response.
+ * L’error handler est utilisé pour convertir une exception
+ * en réponse HTTP
  */
 server.errorHandler(() => import('#exceptions/handler'))
 
 /**
- * The server middleware stack runs middleware on all the HTTP
- * requests, even if there is no route registered for
- * the request URL.
+ * Le stack middleware du serveur s’exécute sur toutes les requêtes HTTP
  */
 server.use([
   () => import('#middleware/container_bindings_middleware'),
   () => import('@adonisjs/static/static_middleware'),
- () => import('@adonisjs/vite/vite_middleware'),
+  () => import('@adonisjs/vite/vite_middleware'),
+  
 ])
 
 /**
- * The router middleware stack runs middleware on all the HTTP
- * requests with a registered route.
+ * Le stack middleware du router s’exécute sur toutes les requêtes avec une route enregistrée
  */
 router.use([
   () => import('@adonisjs/core/bodyparser_middleware'),
   () => import('@adonisjs/session/session_middleware'),
   () => import('@adonisjs/shield/shield_middleware'),
   () => import('@adonisjs/auth/initialize_auth_middleware'),
-
 ])
 
-
-
 /**
- * Named middleware collection must be explicitly assigned to
- * the routes or the routes group.
+ * Named middleware collection doit être explicitement assignée aux routes ou groupes de routes
  */
 export const middleware = router.named({
   guest: () => import('#middleware/guest_middleware'),
-  auth: () => import('#middleware/auth_middleware')
+  auth: () => import('#middleware/AuthMiddleware'),
 })

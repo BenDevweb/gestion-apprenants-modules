@@ -4,7 +4,7 @@ const UsersController = () => import('#controllers/users_controller')
 import Apprenant from '#models/apprenant'
 import Module from '#models/module'
 
-router.on('/login').render('pages/login')
+
 
 // Render home with dynamic counts
 router.get('/', async ({ view }) => {
@@ -13,10 +13,17 @@ router.get('/', async ({ view }) => {
   return view.render('pages/home', { apprenantsCount: apprenants.length, modulesCount: modules.length })
 })
 
-//routes pour le user
-router.get('/register', [UsersController, 'showRegister'])
-router.post('/users', [UsersController, 'store']).
+router.post('/logout', async ({ session, response }) => {
+  session.forget('userId')   // Supprime la session
+  return response.redirect('/login')
+}).as('logout')
 
+//routes pour le user
+router.get('/register', [UsersController, 'showRegister']).as('users.showRegister')
+router.post('/users', [UsersController, 'store']).as('users.store')
+
+router.get('/login', [UsersController, 'showLogin']).as('users.showLogin')
+router.post('/login', [UsersController, 'login']).as('users.login')
 
 router.post('/apprenants', [ApprenantsController, 'createApprenant']).as('apprenants.create')
 router.get('/apprenants', [ApprenantsController, 'getApprenants']).as('apprenants.getApprenants')
