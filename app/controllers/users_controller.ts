@@ -1,4 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
+import { loginValidator } from '#validators/login'
+import user from '#models/user'
 
 export type User = {
   id: number
@@ -17,10 +19,8 @@ export default class UsersController {
     return view.render('pages/register')
   }
 
-  // Enregistre un utilisateur
   async store({ request, response }: HttpContext) {
     const payload = request.only(['name', 'email', 'password'])
-
     const user: User = {
       id: users.length + 1,
       name: payload.name,
@@ -30,35 +30,34 @@ export default class UsersController {
 
     users.push(user)
 
-    return response.redirect('/login')
+    return response.json({
+      message: 'Utilisateur enregistre en memoire',
+      user,
+      users,
+    })
   }
 
-  // Affiche le formulaire de connexion
-  async showLogin({ view, session }: HttpContext) {
-    const error = session.flashMessages.get('error')?.[0] || null
-    return view.render('pages/login', { error })
+  async showLogin({ view }: HttpContext) {
+    return view.render('pages/login')
   }
 
-  // Traitement de la connexion
   async login({ request, response, session }: HttpContext) {
-    const { email, password } = request.only(['email', 'password'])
+    try {
+      const payload = await loginValidator.validate(request.all())
 
-    const user = users.find(u => u.email === email && u.password === password)
+      const user = users.find(u => u.email === payload.email && u.password === payload.password)
 
-    if (!user) {
-      session.flash('error', 'Email ou mot de passe incorrect')
-      return response.redirect('/login')
+      if (!user) {
+        return response.status(401).json({ message: 'Invalid credentials' })
+      }
+
+      // Stocke l'ID de l'utilisateur dans la session
+      session.put('userId', user.id)
+
+      return response.json({ message: 'Login successful', user }) 
+    } catch (error: any) {
+      return response.status(400).json({ message: 'Validation failed', errors: error.errors })
+
     }
-
-    // Sauvegarde "connexion" dans la session
-    session.put('userId', user.id)
-
-    return response.redirect('/')
   }
-
-  // Déconnexion
-  async logout({ session, response }: HttpContext) {
-    session.forget('userId')
-    return response.redirect('/login')
-  }
-}
+} 
