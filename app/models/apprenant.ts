@@ -7,7 +7,7 @@ export default class Apprenant extends BaseModel {
   @column()
   declare name: string
   @column()
-  declare lastName: string
+  declare lastName: string | null
   @column()
   declare genre : 'male' | 'female'
   @column()

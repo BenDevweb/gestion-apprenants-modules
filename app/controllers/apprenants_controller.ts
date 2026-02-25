@@ -50,7 +50,7 @@ public async editForm({ params, view }: HttpContext) {
 }
 
 // Enregistrer les modifications
-public async updateApprenant({ params, request, response }: HttpContext) {
+public async updateApprenant({ params, request, response, view}: HttpContext) {
   const apprenant = await Apprenant.find(params.id)
   if (!apprenant) {
     return view.render('pages/404')

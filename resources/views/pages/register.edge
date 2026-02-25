@@ -1,0 +1,91 @@
+@component("layouts/app", { title: "Inscription" })
+
+  @slot('main')
+
+  <div class="flex flex-col items-center justify-center min-h-[70vh]">
+
+    <!-- Titre -->
+    <div class="text-center mb-10">
+      <h1 class="text-4xl md:text-5xl font-extrabold text-primary">
+        Créer un compte
+      </h1>
+      <p class="mt-3 text-slate-400">
+        Rejoignez la plateforme de gestion de formation
+      </p>
+    </div>
+
+    <!-- Form Card -->
+    <div class="w-full max-w-xl bg-zinc-900 border border-zinc-800 rounded-2xl p-10 shadow-2xl">
+
+      <form action="{{ route('users.showRegister') }}" method="POST" class="space-y-6">
+
+        {{ csrfField() }}
+
+        <!-- Nom complet -->
+        <div>
+          <input 
+            type="text" 
+            name="full_name"
+            placeholder="Entrer le nom complet"
+            required
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <!-- Email -->
+        <div>
+          <input 
+            type="email" 
+            name="email"
+            placeholder="Entrer l'email"
+            required
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <!-- Mot de passe -->
+        <div>
+          <input 
+            type="password" 
+            name="password"
+            placeholder="Entrer le mot de passe"
+            required
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <!-- Confirmation -->
+        <div>
+          <input 
+            type="password" 
+            name="password_confirmation"
+            placeholder="Confirmer le mot de passe"
+            required
+            class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <!-- Bouton -->
+        <button 
+          type="submit"
+          class="w-full bg-primary text-zinc-900 font-bold py-3 rounded-lg hover:bg-accent transition duration-300 shadow-lg"
+        >
+          S'inscrire
+        </button>
+
+      </form>
+
+      <!-- Lien connexion -->
+      <div class="mt-6 text-center text-sm text-slate-400">
+        Déjà un compte ?
+        <a href="/login" class="text-primary hover:text-accent font-semibold">
+          Se connecter
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+  @endslot
+@end

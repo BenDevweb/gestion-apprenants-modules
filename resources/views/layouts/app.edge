@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title> {{ title || "Page"}} </title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#fde047', // yellow-300
+              dark: '#18181b', // zinc-900
+              accent: '#facc15', // yellow-400
+            }
+          }
+        }
+      }
+    </script>
+  </head>
+  <body class="min-h-screen bg-dark text-white">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside class="w-72 bg-zinc-900 border-r border-zinc-800 p-6">
+        <div class="text-3xl font-extrabold mb-8 text-primary flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" /></svg>
+          Dashboard
+        </div>
+        <nav class="space-y-2 text-slate-200">
+          <a href="/" class="flex items-center gap-3 py-2 px-3 rounded hover:bg-zinc-800 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" /></svg>
+            Accueil
+          </a>
+          <a href="{{ route('apprenants.getApprenants') }}" class="flex items-center gap-3 py-2 px-3 rounded hover:bg-zinc-800 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m9-4a4 4 0 10-8 0 4 4 0 008 0z" /></svg>
+            Apprenants
+          </a>
+          <a href="/modules" class="flex items-center gap-3 py-2 px-3 rounded hover:bg-zinc-800 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 014-4h4a4 4 0 014 4v2M9 17H7a4 4 0 01-4-4V7a4 4 0 014-4h10a4 4 0 014 4v6a4 4 0 01-4 4h-2" /></svg>
+            Modules
+          </a>
+          @if(auth?.user)
+            <form action="/logout" method="POST" class="mt-4">
+              {{ csrfField() }}
+              <button class="w-full flex items-center gap-3 text-left py-2 px-3 rounded hover:bg-zinc-800 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7" /></svg>
+                Déconnexion
+              </button>
+            </form>
+          @else
+            <a href="/login" class="flex items-center gap-3 py-2 px-3 rounded hover:bg-zinc-800 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" /></svg>
+              Connexion
+            </a>
+          @end
+        </nav>
+      </aside>
+
+      <!-- Main area -->
+      <div class="flex-1 bg-zinc-950 min-h-screen">
+        <!-- Topbar -->
+        <header class="border-b border-zinc-800 bg-zinc-900">
+          <div class="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between">
+            <a href="/" class="text-lg font-semibold text-primary flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M13 5v6h6" /></svg>
+              VDL-Soir Juin 2025
+            </a>
+            <div>
+              <a href="/register" class="bg-primary text-zinc-900 font-bold py-2 px-4 rounded shadow hover:bg-accent transition flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                Inscription
+              </a>
+            </div>
+          </div>
+        </header>
+
+        <main class="mx-auto max-w-5xl px-6 py-10">
+          {{{ await $slots.main() }}}
+        </main>
+
+        @include('partials/footer')
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,9 +1,22 @@
 import router from '@adonisjs/core/services/router'
 const ApprenantsController = () => import('#controllers/apprenants_controller')
+const UsersController = () => import('#controllers/users_controller')
+import Apprenant from '#models/apprenant'
+import Module from '#models/module'
 
+router.on('/login').render('pages/login')
 
-router.on('/').render('pages/home')
-router.on('/SignupPage').render('pages/SignupPage')
+// Render home with dynamic counts
+router.get('/', async ({ view }) => {
+  const apprenants = await Apprenant.all()
+  const modules = await Module.all()
+  return view.render('pages/home', { apprenantsCount: apprenants.length, modulesCount: modules.length })
+})
+
+//routes pour le user
+router.get('/register', [UsersController, 'showRegister'])
+router.post('/users', [UsersController, 'store']).
+
 
 router.post('/apprenants', [ApprenantsController, 'createApprenant']).as('apprenants.create')
 router.get('/apprenants', [ApprenantsController, 'getApprenants']).as('apprenants.getApprenants')
