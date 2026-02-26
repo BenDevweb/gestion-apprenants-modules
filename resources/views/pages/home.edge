@@ -1,7 +1,11 @@
 @component("layouts/app", { title: "Accueil" })
 
   @slot('main')
-
+  @if(message)
+  <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+    {{ message }}
+  </div>
+@endif
   <div class="flex flex-col gap-12">
 
     <!-- Titre -->
@@ -26,7 +30,7 @@
           Apprenants
         </h2>
         <p class="mt-4 text-4xl font-extrabold text-accent">
-          {{ apprenantsCount }}
+          {{ apprenantsCount  }}
         </p>
       </a>
 
