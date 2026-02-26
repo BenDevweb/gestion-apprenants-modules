@@ -23,12 +23,12 @@ export default class UsersController {
   async store({ request, view }: HttpContext) {
    try {
      const payload = await request.validateUsing(registerValidator)
-    const user: User = {
-      id: users.length + 1,
-      name: payload.name,
-      email: payload.email,
-      password: payload.password,
-    }
+      const user: User = {
+        id: users.length + 1,
+        name: payload.name,
+        email: payload.email,
+        password: payload.password,
+      }
 
     users.push(user)
 
@@ -44,6 +44,7 @@ export default class UsersController {
       }
       return view.render('pages/register', { errors: errors })
    }
+
   }
 
   async showLogin({ view }: HttpContext) {
