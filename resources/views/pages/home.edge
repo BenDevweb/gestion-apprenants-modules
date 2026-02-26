@@ -2,10 +2,26 @@
 
   @slot('main')
   @if(message)
-  <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-    {{ message }}
-  </div>
-@endif
+    <div id="success-alert" class="relative bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+  
+    <span class="block sm:inline">
+      {{ message }}
+    </span>
+
+    <!-- Bouton fermeture -->
+    <button 
+      type="button"
+      onclick="document.getElementById('success-alert').remove()"
+      class="absolute top-0 bottom-0 right-0 px-4 py-3"
+    >
+      <svg class="h-5 w-5 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    </div>
+    @endif
   <div class="flex flex-col gap-12">
 
     <!-- Titre -->

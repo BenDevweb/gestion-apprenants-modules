@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { loginValidator } from '#validators/login'
+import { registerValidator } from '#validators/register'
 
 
 export type User = {
@@ -20,7 +21,8 @@ export default class UsersController {
   }
 
   async store({ request, view }: HttpContext) {
-    const payload = request.only(['name', 'email', 'password'])
+   try {
+     const payload = await request.validateUsing(registerValidator)
     const user: User = {
       id: users.length + 1,
       name: payload.name,
@@ -31,7 +33,17 @@ export default class UsersController {
     users.push(user)
 
     return view.render('pages/login', {message: 'Compte créé avec succès. Veuillez vous connecter.'})
-    
+    } catch (error: any) {
+      const errors = error?.messages ? error.messages : { message: 'Erreur lors de l\'inscription. Veuillez réessayer.'}
+      const fields: any = {}
+      if (error?.messages) {
+        error.messages.map(({ field, message }: any) => {
+          fields[field] = message
+        })
+        return view.render('pages/register', { errors: errors, fields: fields || {} })
+      }
+      return view.render('pages/register', { errors: errors })
+   }
   }
 
   async showLogin({ view }: HttpContext) {
