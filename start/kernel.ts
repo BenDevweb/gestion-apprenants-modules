@@ -27,7 +27,7 @@ server.use([
   () => import('#middleware/container_bindings_middleware'),
   () => import('@adonisjs/static/static_middleware'),
   () => import('@adonisjs/vite/vite_middleware'),
-  
+
 ])
 
 /**
@@ -44,6 +44,7 @@ router.use([
  * Named middleware collection doit être explicitement assignée aux routes ou groupes de routes
  */
 export const middleware = router.named({
+  auth: () => import('#middleware/auth_middleware'),
   guest: () => import('#middleware/guest_middleware'),
   //auth: () => import('#middleware/AuthMiddleware'),
 })

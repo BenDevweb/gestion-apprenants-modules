@@ -2,6 +2,7 @@ import router from '@adonisjs/core/services/router'
 const ApprenantsController = () => import('#controllers/apprenants_controller')
 const UsersController = () => import('#controllers/users_controller')
 import Apprenant from '#models/apprenant'
+import { middleware } from '#start/kernel'
 import Module from '#models/module'
 
 
@@ -23,7 +24,7 @@ router.get('/register', [UsersController, 'showRegister']).as('users.showRegiste
 router.post('/users', [UsersController, 'store']).as('users.store')
 
 router.get('/login', [UsersController, 'showLogin']).as('users.showLogin')
-router.post('/login', [UsersController, 'login']).as('users.login')
+router.post('/login', [UsersController, 'login']).use(middleware.auth()).as('users.login')
 
 router.post('/apprenants', [ApprenantsController, 'createApprenant']).as('apprenants.create')
 router.get('/apprenants', [ApprenantsController, 'getApprenants']).as('apprenants.getApprenants')

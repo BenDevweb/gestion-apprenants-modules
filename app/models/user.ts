@@ -8,13 +8,22 @@ import Adresse from './adresse.js'
 import actualite from './actualite.js'
 import module from './module.js'
 import type { ManyToMany } from '@adonisjs/lucid/types/relations'
+import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'  
+import hash from '@adonisjs/core/services/hash'
+import { compose } from '@adonisjs/core/helpers'
 
-export default class User extends BaseModel {
+
+const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
+  uids: ['email'],
+  passwordColumnName: 'password',
+})
+
+export default class User extends compose ( BaseModel, AuthFinder) {
   @column({ isPrimary: true })
   declare id: number
 
   @column()
-  declare fullName: string
+  declare name: string
 
   @column()
   declare email: string

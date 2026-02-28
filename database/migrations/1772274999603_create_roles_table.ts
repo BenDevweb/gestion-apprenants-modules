@@ -8,7 +8,7 @@ export default class extends BaseSchema {
       table.increments('id')
 
       table
-        .string('name')
+        .string('roleName')
         .notNullable()
         .unique()
 

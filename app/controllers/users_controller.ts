@@ -1,76 +1,69 @@
-import type { HttpContext } from '@adonisjs/core/http'
+import User from '#models/user'
 import { loginValidator } from '#validators/login'
 import { registerValidator } from '#validators/register'
+import type { HttpContext } from '@adonisjs/core/http'
+// import { normalize } from 'path'
 
-
-export type User = {
-  id: number
-  name: string
-  email: string
-  password: string
+type Users = {
+  id: number
+  name: string
+  email: string
+  password: string
 }
 
-// Tableau global en mémoire
-export const users: User[] = []
+const users: Users[] = []
 
 export default class UsersController {
 
-  // Affiche le formulaire d'inscription
-  async showRegister({ view }: HttpContext) {
-    return view.render('pages/register')
-  }
+  async showRegister({ view }: HttpContext) {
+    return view.render('pages/register')
+  }
 
-  async store({ request, view }: HttpContext) {
-   try {
-     const payload = await request.validateUsing(registerValidator)
-      const user: User = {
-        id: users.length + 1,
-        name: payload.name,
-        email: payload.email,
-        password: payload.password,
-      }
+async showLogin({ view }: HttpContext) {
+    return view.render('pages/login')
+  }
 
-    users.push(user)
+async login({ request, response, view, auth }: HttpContext) {
+	try {
+    const {email, password} = await request.validateUsing(loginValidator)
+   	const user = await User.verifyCredentials(email, password)
+if (user){
+await auth.use("web").login(user)
+return response.redirect('/')
+}
 
-    return view.render('pages/login', {message: 'Compte créé avec succès. Veuillez vous connecter.'})
-    } catch (error: any) {
-      const errors = error?.messages ? error.messages : { message: 'Erreur lors de l\'inscription. Veuillez réessayer.'}
-      const fields: any = {}
-      if (error?.messages) {
-        error.messages.map(({ field, message }: any) => {
-          fields[field] = message
-        })
-        return view.render('pages/register', { errors: errors, fields: fields || {} })
-      }
-      return view.render('pages/register', { errors: errors })
-   }
+return view.render('pages/login', {messageError: 'Utilisateur non trouve, veuillez vous inscrire'})
+} catch (error: any) {
+	const errors = error.messages ? error.messages : { message: 'Email ou mot de passe incorrect.' }
+	const fields : any = {}
+	 if(error.messages){
+		error.messages?.map(({field, message}: any) => {
+		fields[field] = message
+	 } )
 
-  }
+	return view.render('pages/login', { errors: errors, fields: fields || {} })
+	 }
 
-  async showLogin({ view }: HttpContext) {
-    return view.render('pages/login')
-  }
+}
+}
 
- async login({request, view}: HttpContext) {
-  try {
-    const payload = await request.validateUsing(loginValidator)
-    const user = users.find((u) => u.email === payload.email && u.password === payload.password)
 
-    if(!user) {
-      return view.render('pages/login', { errors: { message: 'Email ou mot de passe incorrect.' } })
-    }
-    return view.render('pages/home', {message: `Bonjour et bienvenue ${user.email} ! Vous êtes connecté(e).`})
-  } catch (error: any) {
-    const errors = error?.messages ? error.messages : { message: 'Erreur lors de la connexion. Veuillez réessayer.'}
-    const fields: any = {}
-    if (error?.messages) {
-      error.messages.map(({ field, message }: any) => {
-        fields[field] = message
-      })
-      return view.render('pages/login', { errors: errors, fields: fields || {} })
-    }
-    return view.render('pages/login', { errors: errors })
-  }
- }
-} 
 
+  async store({ request, response, view }: HttpContext) {
+   try {
+	const payload = await request.validateUsing(registerValidator)
+   const newUser : Users =  await User.create(payload)
+   return view.render('pages/login', { message: 'Registration successful, please log in.', newUser })
+   } catch (error: any) {
+	const errors = error.messages ? error.messages : { message: 'Email ou mot de passe incorrect.' }
+	const fields : any = {}
+	 if(errors){
+		errors?.map(({field, message}: any) => {
+		fields[field] = message
+	 } )
+ return view.render('pages/register', { errors: errors, fields: fields || {} })	 }
+	return response.status(400).json({ errors: errors })
+}
+    }
+ 
+}
