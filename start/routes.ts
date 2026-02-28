@@ -9,15 +9,17 @@ import Module from '#models/module'
 
 // Render home with dynamic counts
 router.get('/', async ({ view }) => {
-  const apprenants = await Apprenant.all()
-  const modules = await Module.all()
-  return view.render('pages/home', { apprenantsCount: apprenants.length, modulesCount: modules.length })
+
+  return view.render('pages/home')
 })
 
-router.post('/logout', async ({ session, response }) => {
-  session.forget('userId')   // Supprime la session
-  return response.redirect('/login')
-}).as('logout')
+
+
+router.get('/dashbord', async ({ view }) => {
+
+  return view.render('pages/dashboard')
+})
+
 
 //routes pour le user
 router.get('/register', [UsersController, 'showRegister']).as('users.showRegister')

@@ -29,7 +29,7 @@ async login({ request, response, view, auth }: HttpContext) {
    	const user = await User.verifyCredentials(email, password)
 if (user){
 await auth.use("web").login(user)
-return response.redirect('/')
+return response.redirect('pages/dashbord')
 }
 
 return view.render('pages/login', {messageError: 'Utilisateur non trouve, veuillez vous inscrire'})
