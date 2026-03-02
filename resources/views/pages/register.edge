@@ -6,7 +6,7 @@
       Creez un compte en remplissant ce formulaire.
     </p>
 
-    <form class="mt-6 space-y-4" action="/users" method="POST">
+    <form class="mt-6 space-y-4" action="{{ route('users.store') }}" method="POST">
       {{csrfField()}}
 
       <div class="space-y-1">
@@ -16,10 +16,16 @@
           name="name"
           type="text"
           class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-400 focus:outline-none"
-          placeholder="Jean Dupont"
+          placeholder="JOHN DOE"
           required
         />
+        @if (fields)
+        @if (fields.name)
+          <p class="text-sm text-red-500">{{ fields.name }}</p>
+        @end
+        @end
       </div>
+
 
       <div class="space-y-1">
         <label class="text-sm font-medium" for="email">Email</label>
@@ -28,7 +34,7 @@
           name="email"
           type="email"
           class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-400 focus:outline-none"
-          placeholder="jean@exemple.com"
+          placeholder="johndoe@exemple.com"
           required
         />
       </div>
@@ -40,9 +46,14 @@
           name="password"
           type="password"
           class="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-slate-400 focus:outline-none"
-          placeholder="••••••••"
+          placeholder="********"
           required
         />
+        @if (fields)
+        @if (fields.password)
+          <p class="text-sm text-red-500">{{ fields.password }}</p>
+        @end
+        @end
       </div>
 
       <button

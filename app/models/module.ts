@@ -12,8 +12,7 @@ export default class Module extends BaseModel {
   @column()
   declare description: string 
 
-  @column()
-  declare duration: number
+ 
   
  @manyToMany(() => user, { pivotTable: 'users_modules' })
   declare users: ManyToMany<typeof user>

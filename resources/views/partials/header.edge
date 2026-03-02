@@ -3,14 +3,14 @@
     <a href="/" class="text-lg font-semibold">VDL-Soir Juin 2025</a>
     <nav class="text-sm text-slate-600">
       <ul class="flex items-center gap-3">
-        <li><a href="/">Accueil</a></li>
+        <li><a href="{{ route('/') }}">Accueil</a></li>
         <li><a href="/">Apprenants</a></li>
         <li><a href="/">Modules</a></li>
       </ul>
     </nav>
     <ul>
-      <li><a href="/">Connexion</a></li>
-      <li><a href="/">Inscription</a></li>
+      <li><a href="{{ route('users.showLogin') }}">Connexion</a></li>
+      <li><a href="{{ route('users.showRegister') }}">Inscription</a></li>
     </ul>
   </div>
 </header>

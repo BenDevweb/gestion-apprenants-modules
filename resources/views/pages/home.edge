@@ -61,10 +61,13 @@
 
 
 
-
 @component("layouts/app", {title: "Accueil"})
 @slot('main')
-  <h1 class="text-3xl font-bold">Bienvenue sur VDL Soir</h1>
+  <h1 class="text-3xl font-bold">Bienvenue sur DVL-Soir Juin 2025
+     @if(auth.isAuthenticated)
+        {{auth.user.name}}
+     @end
+  </h1>
   <p class="mt-2 text-slate-600">
     Cette page d'accueil est notre premiere vue. Le header et le footer viennent du layout.
   </p>

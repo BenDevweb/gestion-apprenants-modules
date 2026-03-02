@@ -1,9 +1,8 @@
 import router from '@adonisjs/core/services/router'
 const ApprenantsController = () => import('#controllers/apprenants_controller')
 const UsersController = () => import('#controllers/users_controller')
-import Apprenant from '#models/apprenant'
-import { middleware } from '#start/kernel'
-import Module from '#models/module'
+
+
 
 
 
@@ -26,7 +25,7 @@ router.get('/register', [UsersController, 'showRegister']).as('users.showRegiste
 router.post('/users', [UsersController, 'store']).as('users.store')
 
 router.get('/login', [UsersController, 'showLogin']).as('users.showLogin')
-router.post('/login', [UsersController, 'login']).use(middleware.auth()).as('users.login')
+router.post('/login', [UsersController, 'login']).as('users.login')
 
 router.post('/apprenants', [ApprenantsController, 'createApprenant']).as('apprenants.create')
 router.get('/apprenants', [ApprenantsController, 'getApprenants']).as('apprenants.getApprenants')
@@ -35,5 +34,5 @@ router.get('/apprenants/create', [ApprenantsController, 'createForm']).as('appre
 router.get('/apprenants/:id/edit', [ApprenantsController, 'editForm']).as('apprenants.editForm')
 router.put('/apprenants/:id', [ApprenantsController, 'updateApprenant']).as('apprenants.update')
 router.post('/apprenants/:id/supprimer', [ApprenantsController, 'supprimerApprenant']).as('apprenants.supprimerApprenant')
-
+router.post('/users/:userId/modules/:moduleId', [UsersController, 'attachModule']).as('users.attachModule') 
 
